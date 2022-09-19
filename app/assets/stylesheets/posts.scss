@@ -1,3 +1,40 @@
 // Place all the styles related to the posts controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.container-custom{
+   margin-left: 20%;
+   margin-right: 20%;
+}
+
+.signup{
+   max-width: 400px;
+   display: block;
+}
+
+.u-name-div{
+   padding-top: 15px;
+   padding-bottom: 0px;
+}
+
+.post{
+   border-radius: 8px;
+   border: 1px solid #c9c9c9;
+   width: 600px;
+   padding: 5px;
+}
+
+.show-post{
+   margin-left: 32%;
+}
+
+.show-post-comments{
+   margin-left: 8%;
+   overflow: auto;
+   max-height: 600px;
+}
+
+.index-custom{
+   margin-left: 15%;
+   margin-right: 15%;
+}

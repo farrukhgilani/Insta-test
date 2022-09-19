@@ -1,6 +1,9 @@
-<h1>Editing Post</h1>
+<div class='d-flex justify-content-center'>
+   <div class='post bg-white  p-5 mt-5'>
 
-<%= render 'form', post: @post %>
+      <h1>Editing Post</h1>
+      <%= render 'form', post: @post %>
+      <%= link_to 'Back', post_path(@post), class:'btn btn-dark text-white' %>
 
-<%= link_to 'Show', @post %> |
-<%= link_to 'Back', posts_path %>
+   </div>
+</div>

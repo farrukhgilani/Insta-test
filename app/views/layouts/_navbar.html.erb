@@ -1,0 +1,41 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white border sticky-top">
+  <div class="container">
+    <%# <a class="navbar-brand" href="#">Instagram</a> %>
+    <%# <%= link_to 'Instagram',root_path, class:"navbar-brand" %>
+    <%= link_to root_path, style:'width: 10%' do %>
+      <%= image_tag '/Instagram_Logo_2016.png',  width: '100%' %>
+    <%end%>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav ml-auto">
+
+        <%if user_signed_in? %>
+
+          <%= link_to posts_path do%>
+            <%= image_tag '/home.png',  style: 'height:25px; width:25px; object-fit: cover;', class:'m-2 ml-3'%>
+          <%end%>
+          <%= link_to new_post_path do%>
+            <%= image_tag '/more.png',  style: 'height:25px; width:25px; object-fit: cover;', class:'m-2 ml-3'%>
+          <%end%>
+          <%= link_to user_path(current_user) do%>
+            <div class:"nav-link active">
+              <%if current_user.avatar.attached? %>
+                  <%= image_tag current_user.avatar,  style: 'height:25px; width:25px; object-fit: cover;', class:'rounded-circle m-2 ml-3' %>
+                <%else%>
+                  <%= image_tag '/default-avatar-profile-icon-vector-social-media-user-symbol-image-default-avatar-profile-icon-vector-social-media-user-symbol-209498286.jpeg',  style: 'height:32px; width:32px; object-fit: cover;', class:'rounded-circle' %>
+                <%end %>
+            </div>
+          <%end%>
+          <%= link_to 'Sign out',destroy_user_session_path,:method => :delete, class:"nav-link active text-danger" %>
+        <%else%>
+          <%= link_to 'Sign up', new_user_registration_path, class:"nav-link active" %>
+        <%end%>
+
+
+      </div>
+    </div>
+  </div>
+</nav>

@@ -11,12 +11,15 @@
     </div>
   <% end %>
 
+
   <div class="field">
     <%= form.label :caption %>
-    <%= form.text_area :caption %>
+    <%= form.text_area :caption, size:'175x15' ,class:'form-control'%>
   </div>
-
+  <div>
+      <%= form.file_field :images%>
+  </div>
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit class:'btn btn-primary' %>
   </div>
 <% end %>

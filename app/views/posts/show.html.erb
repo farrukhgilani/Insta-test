@@ -1,9 +1,92 @@
-<p id="notice"><%= notice %></p>
+<div class=''>
+<%= link_to 'back', :back, class:'btn btn-dark text-white btn-sm m-2' %>
+  <div class='row'>
 
-<p>
-  <strong>Caption:</strong>
-  <%= @post.caption %>
-</p>
+      <div class="col-6">
 
-<%= link_to 'Edit', edit_post_path(@post) %> |
-<%= link_to 'Back', posts_path %>
+        <div class="post show-post bg-white">
+
+          <div class="w-100">
+            <div class="u-name-div mb-2">
+
+              <%if @post.user.avatar.attached? %>
+                <%= image_tag @post.user.avatar,  style: 'height:32px; width:32px; object-fit: cover;', class:'rounded-circle' %>
+              <%else%>
+                <%= image_tag '/default-avatar-profile-icon-vector-social-media-user-symbol-image-default-avatar-profile-icon-vector-social-media-user-symbol-209498286.jpeg',  style: 'height:32px; width:32px; object-fit: cover;', class:'rounded-circle' %>
+              <%end %>
+              <%= link_to @post.user.username , user_path(@post.user) ,class:'text-dark font-weight-bold text-decoration-none'%>
+
+              <% if @post.user_id == current_user.id %>
+                <%= link_to 'Delete', post_path(@post),method: :delete , class:'btn btn-sm btn-danger text-white float-right m-1' %>
+                <%= link_to 'Edit', edit_post_path, class:'btn btn-sm btn-dark text-white float-right m-1' %>
+              <% end %>
+            </div>
+
+            <div style="height: auto" data-ride="carousel">
+              <div class='carousel-inner'>
+                <% @post.images.each_with_index do |image, i| %>
+                  <div id="myCarousel" class='carousel-item <%= ' active ' if i==0 %>'>
+                    <%=image_tag image,  style: 'height:auto; width:100%;' %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+
+            <div class="pt-1">
+
+              <span><strong><%= pluralize(@post.likes.count,'like')%></strong></span>
+              <br/>
+              <span><b><%= @post.user.username %></b>: <%= @post.caption %> </span>
+              <div><%= link_to 'Like', like_path(@post), class:'btn btn-sm btn-primary text-white mt-1 mb-1'%></div>
+            </div>
+          </div>
+
+      </div>
+
+    </div>
+
+
+
+    <div class='post show-post-comments col-3 bg-white'>
+      <h3>Comments</h3>
+
+        <%= form_with(model: [ @post, @post.comments.build ]) do |form| %>
+          <div class='d-flex flex-row'>
+            <div> <%= form.text_field :content, class:'form-control'%> </div>
+            <div> <%= form.submit "comment", method: :post , class:'btn btn-primary btn-sm m-1'%></div>
+          </div>
+        <%end%>
+
+        <div class='mt-2 w-100'>
+        <% @post.comments.each do |c| %>
+          <%if !c.content.nil? %>
+          <div class='border p-1 mb-2 w-100'>
+            <%User.all.each do |user|%>
+              <% if user.id == c.user_id %>
+                <span class='d-flex flex-row'>
+                  <%if user.avatar.attached? %>
+                    <%= image_tag user.avatar,  style: 'height:32px; width:32px; object-fit: cover;', class:'rounded-circle' %>
+                  <%else%>
+                    <%= image_tag '/default-avatar-profile-icon-vector-social-media-user-symbol-image-default-avatar-profile-icon-vector-social-media-user-symbol-209498286.jpeg',  style: 'height:32px; width:32px; object-fit: cover;', class:'rounded-circle' %>
+                  <%end %>
+                  <h5 class='m-1'><%=user.username%></h5>
+                </span>
+
+              <%end%>
+            <%end%>
+            <p class='mt-1'><%= c.content%></p>
+
+            <% if current_user.id == c.user_id %>
+              <%= link_to "delete", [c.post, c], method: :delete, class:'text-danger' %>
+            <% end %>
+
+
+          </div>
+          <% end %>
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+
+</div>

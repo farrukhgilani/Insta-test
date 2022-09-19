@@ -1,0 +1,62 @@
+<div class="index-custom">
+   <div class="d-flex flex-row justify-content-center align-item-center mt-5">
+      <div>
+         <%if @user.avatar.attached? %>
+            <%= image_tag @user.avatar,  style: 'height:150px; width:150px; object-fit: cover;', class:'rounded-circle' %>
+         <%else%>
+            <%= image_tag '/default-avatar-profile-icon-vector-social-media-user-symbol-image-default-avatar-profile-icon-vector-social-media-user-symbol-209498286.jpeg',  style: 'height:150px; width:150px; object-fit: cover;', class:'rounded-circle' %>
+         <%end %>
+      </div>
+
+      <div class="ml-5 mt-4">
+         <h3>
+            <%= @user.username%>
+
+            <% if @user == current_user  %>
+               <%= link_to 'Edit profile', edit_user_registration_path, class:'ml-4 btn btn-sm btn-outline-dark' %>
+            <% elsif !current_user.followees.include?(@user) %>
+               <%= link_to 'Follow', follow_user_path, method: "POST", class:'ml-4 btn btn-sm btn-primary text-white' %>
+            <% else %>
+               <%= link_to 'Unfollow', unfollow_user_path, method: "POST", class:'ml-4 btn btn-sm btn-danger text-white' %>
+            <% end %>
+         </h3>
+
+         <div class='d-flex flex-row mt-3 mb-3'>
+            <h6 class='mr-5'><strong><%= @user.posts.count%></strong> posts</h6>
+            <h6 class='mr-5'><strong><%= @user.followers.count%></strong> Followers</h6>
+            <h6 class=''><strong><%= @user.followees.count%></strong> Following</h6>
+         </div>
+
+         <h5><%= @user.name%></h5>
+
+      </div>
+   </div>
+
+   <div class="d-flex justify-content-center align-item-center mt-5">
+      <div class="row justify-content-center">
+
+         <% if @user.Public?  || current_user.followees.include?(@user) || current_user== @user%>
+            <% if @user.posts.empty? %>
+               <h4 class='text-secondary'>No Posts to show</h4>
+            <% else %>
+               <%@user.posts.each do |post| %>
+                  <div class="col-lg-4 col-md-6 col-12 mb-3">
+                     <div class="">
+                     <%= link_to post_path(post) do%>
+                        <%=image_tag post.images[0],  style: 'height:330px; width:330px; object-fit: cover;', class:'rounded' %>
+                     <%end%>
+                     </div>
+                  </div>
+               <%end%>
+            <% end %>
+
+         <% else %>
+            <h5>This account is private</h5>
+         <% end %>
+
+
+
+      </div>
+   </div>
+
+</div>

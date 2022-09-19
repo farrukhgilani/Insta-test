@@ -1,27 +1,74 @@
-<p id="notice"><%= notice %></p>
+<div class='container-fluid'>
+  <div class="row justify-content-center">
 
-<h1>Posts</h1>
+    <div class="col-5">
+      <% current_user.followees.each do |followee|%>
+        <% followee.posts.each do |p| %>
+            <div class="post mt-3 bg-white">
 
-<table>
-  <thead>
-    <tr>
-      <th>Caption</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+              <div class="w-100">
 
-  <tbody>
-    <% @posts.each do |post| %>
-      <tr>
-        <td><%= post.caption %></td>
-        <td><%= link_to 'Show', post %></td>
-        <td><%= link_to 'Edit', edit_post_path(post) %></td>
-        <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+                <div class="u-name-div mb-1">
+                  <%if p.user.avatar.attached? %>
+                    <%= image_tag p.user.avatar,  style: 'height:32px; width:32px; object-fit: cover;', class:'rounded-circle' %>
+                  <%else%>
+                    <%= image_tag '/default-avatar-profile-icon-vector-social-media-user-symbol-image-default-avatar-profile-icon-vector-social-media-user-symbol-209498286.jpeg',  style: 'height:32px; width:32px; object-fit: cover;', class:'rounded-circle' %>
+                  <%end %>
+                  <%= link_to p.user.username , user_path(p.user) ,class:'text-dark font-weight-bold text-decoration-none'%>
+                </div>
 
-<br>
+                <div style="height: auto" data-ride="carousel">
+                  <div class='carousel-inner'>
+                    <%= link_to post_path(p) do %>
+                      <% p.images.each_with_index do |image, i| %>
+                        <div id="myCarousel" class='carousel-item <%= ' active ' if i==0 %>'>
+                          <%= image_tag image,  style: 'height:auto; width:100%;' %>
+                        </div>
+                      <% end %>
+                    <% end %>
+                  </div>
+                </div>
 
-<%= link_to 'New Post', new_post_path %>
+                <div class="pt-1">
+                  <span><strong><%= pluralize(p.likes.count,'like')%></strong></span>
+                  <span class='ml-2'><strong><%= pluralize(p.comments.count,'Comment')%></strong></span>
+                  <br/>
+                  <span><b><%= p.user.username %>:</b> <%= p.caption %> </span>
+                  <div><%= link_to 'Like', like_path(p), class:'btn btn-sm btn-primary text-white mt-1 mb-1'%></div>
+                </div>
+
+              </div>
+
+            </div>
+
+        <% end %>
+      <%end%>
+    </div>
+
+
+    <div style='height: 500px ' class='col-3 post bg-white mt-3 ml-5'>
+      <h5 class='mt-3 text-secondary'>Suggestions For You</h5>
+      <% User.all.each do |user| %>
+        <div class='m-3'>
+          <%if user != current_user %>
+
+            <% if !current_user.followees.include?(user) %>
+
+
+
+              <%if user.avatar.attached? %>
+                <%= image_tag user.avatar,  style: 'height:32px; width:32px; object-fit: cover;', class:'rounded-circle' %>
+              <%else%>
+                <%= image_tag '/default-avatar-profile-icon-vector-social-media-user-symbol-image-default-avatar-profile-icon-vector-social-media-user-symbol-209498286.jpeg',  style: 'height:32px; width:32px; object-fit: cover;', class:'rounded-circle' %>
+
+              <%end %>
+              <%= link_to user.username , user_path(user) ,class:'text-dark font-weight-bold text-decoration-none'%>
+              <%= link_to 'Follow' , follow_user_path(user), method: "POST" ,class:'btn btn-sm btn-primary text-white float-right'%>
+              <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+  </div>
+</div>
