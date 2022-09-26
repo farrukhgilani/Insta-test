@@ -10,12 +10,13 @@ class User < ApplicationRecord
   validates :username, presence: true, uniqueness: true
 
   has_many :followed_users, foreign_key: :follower_id, class_name: 'Follow'
-  has_many :followees, through: :followed_users
+  has_many :followees, through: :followed_users, dependent: :destroy
   has_many :following_users, foreign_key: :followee_id, class_name: 'Follow'
-  has_many :followers, through: :following_users
+  has_many :followers, through: :following_users, dependent: :destroy
 
-  has_many :posts
-  has_many :comments
-  has_one_attached :avatar
-  has_one :like
+  has_many :posts, dependent: :destroy
+  has_many :comments, dependent: :destroy
+  has_many :stories, dependent: :destroy
+  has_one_attached :avatar, dependent: :destroy
+  has_one :like, dependent: :destroy
 end

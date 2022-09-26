@@ -1,0 +1,20 @@
+<div class='bg-dark' style='height: 93vh; position: fixed; width: 100%'>
+   <div class="d-flex justify-content-center align-item-center">
+      <div class='story bg-white border mt-2'>
+            <div class='d-flex flex-row m-2'>
+               <%= image_tag @user.avatar,width:'32px', height:'32px', class:'rounded-circle' if @user.avatar.attached?  %>
+               <h5 class='m-1'> <%= @user.username%> </h5>
+               <%= link_to 'back', root_path, class:'btn btn-sm btn-dark text-white' %>
+            </div>
+            <div style="height: auto" data-ride="carousel">
+               <div class='carousel-inner'>
+                  <% @user.stories.each_with_index do |story,i| %>
+                     <div id="myCarousel" class='carousel-item <%= ' active ' if i==0 %>'>
+                        <%= image_tag story.image,width:'100%', height:'600px'  %>
+                     </div>
+                  <% end %>
+               </div>
+            </div>
+      </div>
+   </div>
+</div>

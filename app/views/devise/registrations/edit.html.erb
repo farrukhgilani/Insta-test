@@ -27,6 +27,11 @@
       <% end %>
 
       <div class="field">
+        <%= f.label :bio %><br />
+        <%= f.text_area :bio, class:'form-control'%>
+      </div>
+
+      <div class="field">
         <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
         <%= f.password_field :password, autocomplete: "new-password", class:'form-control' %>
         <% if @minimum_password_length %>
@@ -51,10 +56,10 @@
 
       <% if current_user.Public? %>
       <h5>Your account is currently Public</h5>
-        <%= link_to 'Make Private', user_type_path(current_user), class:'btn btn-primary text-white'%>
+        <%= link_to 'Make Private', account_user_path(current_user), class:'btn btn-primary text-white'%>
       <% else %>
         <h5>Your account is currently Private</h5>
-        <%= link_to 'Make Public', user_type_path(current_user), class:'btn btn-warning text-dark'%>
+        <%= link_to 'Make Public', account_user_path(current_user), class:'btn btn-warning text-dark'%>
       <% end %>
 
     <% end %>

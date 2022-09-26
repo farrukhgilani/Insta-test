@@ -48,6 +48,7 @@ class CommentsController < ApplicationController
   def destroy
     @post = Post.find(params[:post_id])
     @comment = @post.comments.find(params[:id])
+    authorize @comment
     if @comment.destroy
       redirect_to post_path(@post), flash: {notice: "Comment was successfully destroyed."}
     end

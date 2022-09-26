@@ -1,18 +1,24 @@
 Rails.application.routes.draw do
-
   resources :follows
   devise_for :users
   root to: 'posts#index'
-  get '/posts/:id/likes', to: 'posts#like', as: 'like'
-  get '/users/:id', to: 'users#show', as:'user'
 
-  get '/user/:id', to: 'users#account', as:'user_type'
+  resources :users do
+    member do
+      get :show
+      get :account
+      get :cancel
+      get :accept
+      post :follow
+      post :unfollow
+    end
+    resources :stories
+  end
 
-  post '/users/:id/follow', to: "users#follow", as: "follow_user"
-  post '/users/:id/unfollow', to: "users#unfollow", as: "unfollow_user"
-
-  # resources :users#, only:[:show]
   resources :posts do
+    member do
+      get :like
+    end
     resources :comments
   end
 

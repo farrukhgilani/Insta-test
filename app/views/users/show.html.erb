@@ -14,8 +14,11 @@
 
             <% if @user == current_user  %>
                <%= link_to 'Edit profile', edit_user_registration_path, class:'ml-4 btn btn-sm btn-outline-dark' %>
+            <% elsif Request.where(sender_id: current_user.id, receiver_id: @user.id).exists? %>
+               <%= link_to 'Cancel Request', cancel_user_path(@user), class:'ml-4 btn btn-sm btn-danger text-white' %>
             <% elsif !current_user.followees.include?(@user) %>
                <%= link_to 'Follow', follow_user_path, method: "POST", class:'ml-4 btn btn-sm btn-primary text-white' %>
+
             <% else %>
                <%= link_to 'Unfollow', unfollow_user_path, method: "POST", class:'ml-4 btn btn-sm btn-danger text-white' %>
             <% end %>
@@ -28,7 +31,11 @@
          </div>
 
          <h5><%= @user.name%></h5>
-
+         <pre class='bg-light'><%= @user.bio%></pre>
+         <% if @user == current_user %>
+            <%= link_to 'Add story', new_user_story_path(@user), class:'btn btn-sm btn-dark text-white w-100'%>
+         <% end %>
+         
       </div>
    </div>
 
@@ -53,8 +60,6 @@
          <% else %>
             <h5>This account is private</h5>
          <% end %>
-
-
 
       </div>
    </div>

@@ -2,11 +2,20 @@ class UsersController < ApplicationController
 
    def show
       @user = User.find(params[:id])
+      authorize @user
    end
 
    def follow
       @user = User.find(params[:id])
-      current_user.followees << @user
+      if @user.Public?
+         current_user.followees << @user
+      else
+         begin
+            Request.create(sender_id: current_user.id, receiver_id: @user.id)
+         rescue
+            flash[:alert] = "Already Requested"
+         end
+      end
       redirect_back(fallback_location: user_path(@user))
    end
 
@@ -23,5 +32,23 @@ class UsersController < ApplicationController
          current_user.Public!
       end
       redirect_to user_path(current_user), flash: {notice: "Account type changed to #{current_user.account_type}"}
+   end
+
+   def cancel
+      @request = Request.find_by(sender_id: current_user.id, receiver_id: params[:id])
+      if @request.destroy
+         redirect_back(fallback_location: user_path(params[:id]))
+      end
+   end
+
+   def accept
+      @user = User.find(params[:id])
+      begin
+         current_user.followers << @user
+         Request.find_by(sender_id: @user.id, receiver_id: current_user.id).destroy
+      rescue
+         flash[:alert] = "Request Already Accepted"
+      end
+      redirect_to root_path
    end
 end

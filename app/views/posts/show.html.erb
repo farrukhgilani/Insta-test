@@ -1,5 +1,5 @@
-<div class=''>
-<%= link_to 'back', :back, class:'btn btn-dark text-white btn-sm m-2' %>
+<div class='mt-5 h-100 w-100'>
+<%# <%= link_to 'back', :back, class:'btn btn-dark text-white btn-sm m-2' %>
   <div class='row'>
 
       <div class="col-6">
@@ -37,7 +37,13 @@
               <span><strong><%= pluralize(@post.likes.count,'like')%></strong></span>
               <br/>
               <span><b><%= @post.user.username %></b>: <%= @post.caption %> </span>
-              <div><%= link_to 'Like', like_path(@post), class:'btn btn-sm btn-primary text-white mt-1 mb-1'%></div>
+              <div>
+                <% if Like.where(user_id: current_user.id, post_id: @post.id).exists? %>
+                      <%= link_to 'Unlike', like_post_path(@post), class:'btn btn-sm btn-danger text-white mt-1 mb-1'%>
+                <% else %>
+                      <%= link_to 'Like', like_post_path(@post), class:'btn btn-sm btn-primary text-white mt-1 mb-1'%>
+                <% end %>
+              </div>
             </div>
           </div>
 

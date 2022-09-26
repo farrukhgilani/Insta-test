@@ -1,0 +1,13 @@
+<%= link_to 'Back', :back, class:'btn btn-dark text-white btn-sm m-5'%>
+<div class='d-flex justify-content-center'>
+   <div class='story flex-column'>
+      <h1>New Story</h1>
+      <%= form_for @story, url: user_stories_path(current_user), html: {method: :post} do |f| %>
+         <%= f.file_field :image %>
+         <%= f.submit 'Add Story', class:'btn btn-primary mt-2' %>
+      <%end%>
+      <br/>
+
+   </div>
+</div>
+

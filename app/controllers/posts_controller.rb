@@ -17,12 +17,14 @@ class PostsController < ApplicationController
 
   # GET /posts/1/edit
   def edit
+    authorize @post
   end
 
   # POST /posts or /posts.json
   def create
     # @post = Post.new(post_params)
     @post = current_user.posts.create(post_params)
+    authorize @post
     respond_to do |format|
       if @post.save
         format.html { redirect_to post_url(@post), notice: "Post was successfully created." }
@@ -36,6 +38,7 @@ class PostsController < ApplicationController
 
   # PATCH/PUT /posts/1 or /posts/1.json
   def update
+    authorize @post
     respond_to do |format|
       if @post.update(post_params)
         format.html { redirect_to post_url(@post), notice: "Post was successfully updated." }
@@ -49,8 +52,8 @@ class PostsController < ApplicationController
 
   # DELETE /posts/1 or /posts/1.json
   def destroy
+    authorize @post
     @post.destroy
-
     respond_to do |format|
       format.html { redirect_to posts_url, notice: "Post was successfully destroyed." }
       format.json { head :no_content }
@@ -59,10 +62,13 @@ class PostsController < ApplicationController
 
   def like
     @post = Post.find(params[:id])
-    @like  = Like.create(post_id: @post.id, user_id: current_user.id)
-
-
-    redirect_to root_path
+    if Like.where(post_id: @post.id, user_id: current_user.id).exists?
+      @like = Like.find_by(post_id: @post.id, user_id: current_user.id)
+      @like.destroy
+    else
+      @like  = Like.create(post_id: @post.id, user_id: current_user.id)
+    end
+    redirect_back(fallback_location: :back)
   end
 
   private
