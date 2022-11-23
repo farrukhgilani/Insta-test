@@ -2,7 +2,7 @@
 <%# <%= link_to 'back', :back, class:'btn btn-dark text-white btn-sm m-2' %>
   <div class='row'>
 
-      <div class="col-6">
+      <div class="col-md-6">
 
         <div class="post show-post bg-white">
 
@@ -20,38 +20,34 @@
                 <%= link_to 'Delete', post_path(@post),method: :delete , class:'btn btn-sm btn-danger text-white float-right m-1' %>
                 <%= link_to 'Edit', edit_post_path, class:'btn btn-sm btn-dark text-white float-right m-1' %>
               <% end %>
+
             </div>
 
             <div style="height: auto" data-ride="carousel">
               <div class='carousel-inner'>
                 <% @post.images.each_with_index do |image, i| %>
                   <div id="myCarousel" class='carousel-item <%= ' active ' if i==0 %>'>
-                    <%=image_tag image,  style: 'height:auto; width:100%;' %>
+                    <%=image_tag image,  style: 'height: auto; width:100%;' %>
                   </div>
                 <% end %>
               </div>
             </div>
 
             <div class="pt-1">
-
               <span><strong><%= pluralize(@post.likes.count,'like')%></strong></span>
               <br/>
               <span><b><%= @post.user.username %></b>: <%= @post.caption %> </span>
               <div>
                 <% if Like.where(user_id: current_user.id, post_id: @post.id).exists? %>
-                      <%= link_to 'Unlike', like_post_path(@post), class:'btn btn-sm btn-danger text-white mt-1 mb-1'%>
+                      <%= link_to 'Unlike', like_post_path(@post) ,class:'btn btn-sm btn-danger text-white mt-1 mb-1 unlike-btn'%>
                 <% else %>
-                      <%= link_to 'Like', like_post_path(@post), class:'btn btn-sm btn-primary text-white mt-1 mb-1'%>
+                      <%= link_to 'Like', like_post_path(@post) ,class:'btn btn-sm btn-primary text-white mt-1 mb-1 like-btn'%>
                 <% end %>
               </div>
             </div>
           </div>
-
       </div>
-
     </div>
-
-
 
     <div class='post show-post-comments col-3 bg-white'>
       <h3>Comments</h3>
@@ -85,7 +81,6 @@
             <% if current_user.id == c.user_id %>
               <%= link_to "delete", [c.post, c], method: :delete, class:'text-danger' %>
             <% end %>
-
 
           </div>
           <% end %>

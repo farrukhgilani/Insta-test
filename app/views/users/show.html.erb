@@ -35,20 +35,20 @@
          <% if @user == current_user %>
             <%= link_to 'Add story', new_user_story_path(@user), class:'btn btn-sm btn-dark text-white w-100'%>
          <% end %>
-         
+
       </div>
    </div>
 
-   <div class="d-flex justify-content-center align-item-center mt-5">
-      <div class="row justify-content-center">
-
+   <div class="mt-5">
+      <div class="row">
+         <%# <div class="col-lg-4 col-md-6 col-12 mb-3"> %>
          <% if @user.Public?  || current_user.followees.include?(@user) || current_user== @user%>
             <% if @user.posts.empty? %>
                <h4 class='text-secondary'>No Posts to show</h4>
             <% else %>
                <%@user.posts.each do |post| %>
-                  <div class="col-lg-4 col-md-6 col-12 mb-3">
-                     <div class="">
+                  <div class='d-flex justify-content-center align-item-center'>
+                     <div class="m-2">
                      <%= link_to post_path(post) do%>
                         <%=image_tag post.images[0],  style: 'height:330px; width:330px; object-fit: cover;', class:'rounded' %>
                      <%end%>
@@ -60,7 +60,7 @@
          <% else %>
             <h5>This account is private</h5>
          <% end %>
-
+         <%# </div> %>
       </div>
    </div>
 

@@ -24,7 +24,6 @@ class PostsController < ApplicationController
   def create
     # @post = Post.new(post_params)
     @post = current_user.posts.create(post_params)
-    authorize @post
     respond_to do |format|
       if @post.save
         format.html { redirect_to post_url(@post), notice: "Post was successfully created." }
@@ -69,6 +68,10 @@ class PostsController < ApplicationController
       @like  = Like.create(post_id: @post.id, user_id: current_user.id)
     end
     redirect_back(fallback_location: :back)
+    # redirect_to root_path
+    # respond_to? |format| do
+    #   format.html {redirect_to root_path}
+    # end
   end
 
   private
